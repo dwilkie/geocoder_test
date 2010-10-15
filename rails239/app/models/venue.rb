@@ -1,0 +1,1 @@
+../../../base/app/models/venue.rb

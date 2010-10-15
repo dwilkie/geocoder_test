@@ -1,0 +1,6 @@
+[submodule "rails300/vendor/plugins/geocoder"]
+	path = rails300/vendor/plugins/geocoder
+	url = git://github.com/alexreisner/geocoder.git
+[submodule "rails239/vendor/plugins/geocoder"]
+	path = rails239/vendor/plugins/geocoder
+	url = git://github.com/alexreisner/geocoder.git
