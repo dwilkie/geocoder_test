@@ -1,0 +1,9 @@
+= The Geocoder Test Apps
+
+This repository consists of some bare Rails apps used for testing the rails-geocoder gem (http://github.com/alexreisner/geocoder). The tests included with the gem attempt to simulate ActiveRecord and do a very poor job. These apps can be used to test geocoder with multiple Rails versions and database types.
+
+The <tt>/base</tt> directory contains the actual meat: the geocoded model, the database migration, the unit tests, and the fixtures. Each of the apps contains symbolic links to these files in the base directory. The base directory also contains some sample database.yml files which you can link to from each app.
+
+To run the tests, go into an app directory (eg: <tt>rails300)</tt>, create a valid <tt>config/database.yml</tt> file, create and migrate your database (development and test environments) and run the unit tests (eg: <tt>rake test:units</tt>).
+
+The rails-geocoder gem is installed a plugin in each app, and is checked out directly from the repository as a Git submodule.
