@@ -5,7 +5,7 @@ class VenueTest < ActiveSupport::TestCase
   test "fetch coordinates" do
     v = Venue.new(
       :name => "Madison Square Garden",
-      :address => "4 Pennsylvania Plaza, New York, NY"
+      :address => "4 Penn Plaza, New York, NY"
     )
     v.fetch_coordinates
     assert_not_nil v.latitude
