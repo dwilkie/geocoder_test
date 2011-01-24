@@ -1,1 +1,0 @@
-../../../base/db/migrate/20100802200613_create_venues.rb
