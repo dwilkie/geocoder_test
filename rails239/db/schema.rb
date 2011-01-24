@@ -9,7 +9,16 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100802200613) do
+ActiveRecord::Schema.define(:version => 20110124215900) do
+
+  create_table "landmarks", :force => true do |t|
+    t.string   "name"
+    t.string   "address"
+    t.float    "latitude"
+    t.float    "longitude"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "venues", :force => true do |t|
     t.string   "name"
