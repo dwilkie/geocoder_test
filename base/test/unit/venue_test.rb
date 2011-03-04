@@ -14,6 +14,26 @@ class VenueTest < ActiveSupport::TestCase
     assert (v.longitude - -73.99).abs < 0.01
   end
 
+  test "lookup with blank address" do
+    v = Venue.new(
+      :name => "Haunted House",
+      :address => ""
+    )
+    assert_nothing_raised do
+      v.fetch_coordinates
+    end
+  end
+
+  test "lookup with bad address" do
+    v = Venue.new(
+      :name => "Haunted House",
+      :address => ", , , "
+    )
+    assert_nothing_raised do
+      v.fetch_coordinates
+    end
+  end
+
   test "finds venues near a point" do
     assert Venue.near(hempstead_coords, 15).include?(venues(:nikon))
   end
