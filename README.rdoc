@@ -1,9 +1,9 @@
 = The Geocoder Test Apps
 
-This repository consists of some bare Rails apps used for testing the rails-geocoder gem (http://github.com/alexreisner/geocoder). The tests included with the gem attempt to simulate ActiveRecord and do a very poor job. These apps can be used to better test geocoder with multiple Rails versions and database types.
+This repository consists of some bare Rails apps used for testing the geocoder gem (http://github.com/alexreisner/geocoder). The tests included with the gem attempt to simulate ActiveRecord and do a very poor job. These apps can be used to better test geocoder with multiple Rails versions and database types.
 
 The <tt>/base</tt> directory contains the actual meat: the geocoded model, the database migration, the unit tests, and the fixtures. Each of the apps contains symbolic links to these files in the base directory. The base directory also contains some sample database.yml files which you can link to from each app. Note that because the same migration file is used for the different apps you can re-use the same test databases (no need to create different databases for different Rails versions).
 
-You must provide the rails-geocoder gem to each app. It is not included because it is assumed you are using this app to test changes to it. I suggest adding a symbolic link in vendor/plugins (in each app) to your geocoder source directory.
+You must provide the geocoder gem to each app. It is not included because it is assumed you are using this app to test changes to it. I suggest adding a symbolic link in vendor/plugins (in each app) to your geocoder source directory.
 
-To run the tests, go into an app directory (eg: <tt>rails300</tt>), create a valid <tt>config/database.yml</tt> file, create and migrate your database (development and test environments) and run the unit tests (eg: <tt>rake test:units</tt>).
+To run the tests, go into an app directory (eg: <tt>rails305</tt>), create a valid <tt>config/database.yml</tt> file, create and migrate your database (development and test environments) and run the unit tests (eg: <tt>rake test:units</tt>).
