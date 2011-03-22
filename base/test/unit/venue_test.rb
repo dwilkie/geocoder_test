@@ -97,7 +97,7 @@ class VenueTest < ActiveSupport::TestCase
       cache = Geocoder.cache
       # manually set weird cache content
       cache[url] = "test({'latt':'4.44','longt':'5.55'});"
-      result = Geocoder.search(query)
+      result = Geocoder.search(query).first
       assert_equal "4.44", result.latitude.to_s
       assert_equal "5.55", result.longitude.to_s
       cache.expire(url)
