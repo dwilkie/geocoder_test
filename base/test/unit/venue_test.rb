@@ -42,6 +42,13 @@ class VenueTest < ActiveSupport::TestCase
     assert Venue.near(hempstead_coords, 15).include?(venues(:nikon))
   end
 
+  test "bearing of found points" do
+    nearbys = Venue.near(hempstead_coords, 15)
+    nikon = nearbys.detect{ |v| v.id == Fixtures.identify(:nikon) }
+    assert (144 - nikon.bearing).abs < 2,
+      "Bearing should be close to 144 degrees"
+  end
+
   test "don't find venues not near a point" do
     assert !Venue.near(hempstead_coords, 5).include?(venues(:forum))
   end
