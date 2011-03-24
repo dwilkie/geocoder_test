@@ -6,6 +6,8 @@ class VenueTest < ActiveSupport::TestCase
     Geocoder::Configuration.cache = nil
   end
 
+  # --- geocoding ---
+
   test "fetch coordinates" do
     v = Venue.new(
       :name => "Madison Square Garden",
@@ -38,15 +40,47 @@ class VenueTest < ActiveSupport::TestCase
     end
   end
 
-  test "finds venues near a point" do
-    assert Venue.near(hempstead_coords, 15).include?(venues(:nikon))
-  end
 
-  test "bearing of found points" do
+  # --- distance ---
+
+  test "distance of found points" do
+    distance = 9
     nearbys = Venue.near(hempstead_coords, 15)
     nikon = nearbys.detect{ |v| v.id == Fixtures.identify(:nikon) }
-    assert (144 - nikon.bearing).abs < 2,
-      "Bearing should be close to 144 degrees"
+    assert (distance - nikon.distance).abs < 1,
+      "Distance should be close to #{distance} miles but was #{nikon.distance}"
+  end
+
+
+  # --- bearing ---
+
+  test "bearing (linear) of found points" do
+    bearing = 137
+    nearbys = Venue.near(hempstead_coords, 15, :bearing => :linear)
+    nikon = nearbys.detect{ |v| v.id == Fixtures.identify(:nikon) }
+    assert (bearing - nikon.bearing).abs < 2,
+      "Bearing should be close to #{bearing} degrees but was #{nikon.bearing}"
+  end
+
+  test "bearing (spherical) of found points" do
+    bearing = 144
+    nearbys = Venue.near(hempstead_coords, 15, :bearing => :spherical)
+    nikon = nearbys.detect{ |v| v.id == Fixtures.identify(:nikon) }
+    assert (bearing - nikon.bearing).abs < 2,
+      "Bearing should be close to #{bearing} degrees but was #{nikon.bearing}"
+  end
+
+  test "don't calculate bearing" do
+    nearbys = Venue.near(hempstead_coords, 15, :bearing => false)
+    nikon = nearbys.detect{ |v| v.id == Fixtures.identify(:nikon) }
+    assert_raises(NoMethodError) { nikon.bearing }
+  end
+
+
+  # --- near ---
+
+  test "finds venues near a point" do
+    assert Venue.near(hempstead_coords, 15).include?(venues(:nikon))
   end
 
   test "don't find venues not near a point" do
@@ -67,12 +101,8 @@ class VenueTest < ActiveSupport::TestCase
     assert !venues(:nikon).nearbys(5).include?(venues(:nikon))
   end
 
-  test "select options" do
-    forum = venues(:forum)
-    venues = Venue.near(hollywood_coords, 20,
-      :select => "*, latitude * longitude AS junk")
-    assert venues.first.junk.to_f - (forum.latitude * forum.longitude) < 0.1
-  end
+
+  # --- cache ---
 
   test "new result stored on cache miss" do
     cache_stores.each do |store|
@@ -123,6 +153,16 @@ class VenueTest < ActiveSupport::TestCase
       cache.expire(:all)
       assert_equal 0, cache.send(:keys).size
     end
+  end
+
+
+  # --- near scope options ---
+
+  test "select options" do
+    forum = venues(:forum)
+    venues = Venue.near(hollywood_coords, 20,
+      :select => "*, latitude * longitude AS junk")
+    assert venues.first.junk.to_f - (forum.latitude * forum.longitude) < 0.1
   end
 
   # TODO: test limit, order, offset, exclude, and units arguments
