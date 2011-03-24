@@ -21,23 +21,13 @@ class VenueTest < ActiveSupport::TestCase
   end
 
   test "lookup with blank address" do
-    v = Venue.new(
-      :name => "Haunted House",
-      :address => ""
-    )
-    assert_nothing_raised do
-      v.fetch_coordinates
-    end
+    v = Venue.new(:name => "Haunted House", :address => "")
+    assert_nothing_raised { v.fetch_coordinates }
   end
 
   test "lookup with bad address" do
-    v = Venue.new(
-      :name => "Haunted House",
-      :address => ", , , "
-    )
-    assert_nothing_raised do
-      v.fetch_coordinates
-    end
+    v = Venue.new(:name => "Haunted House", :address => ", , , ")
+    assert_nothing_raised { v.fetch_coordinates }
   end
 
 
