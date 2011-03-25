@@ -1,6 +1,7 @@
 GEM
   remote: http://rubygems.org/
   specs:
+    SystemTimer (1.2.3)
     abstract (1.0.0)
     actionmailer (3.0.5)
       actionpack (= 3.0.5)
@@ -24,6 +25,10 @@ GEM
       activesupport (= 3.0.5)
       arel (~> 2.0.2)
       tzinfo (~> 0.3.23)
+    activerecord-jdbc-adapter (1.1.1)
+    activerecord-jdbcmysql-adapter (1.1.1)
+      activerecord-jdbc-adapter (= 1.1.1)
+      jdbc-mysql (~> 5.1.0)
     activeresource (3.0.5)
       activemodel (= 3.0.5)
       activesupport (= 3.0.5)
@@ -35,6 +40,7 @@ GEM
     erubis (2.6.6)
       abstract (>= 1.0.0)
     i18n (0.5.0)
+    jdbc-mysql (5.1.13)
     linecache19 (0.5.11)
       ruby_core_source (>= 0.1.4)
     mail (2.2.15)
@@ -85,9 +91,12 @@ GEM
     tzinfo (0.3.24)
 
 PLATFORMS
+  java
   ruby
 
 DEPENDENCIES
+  SystemTimer
+  activerecord-jdbcmysql-adapter
   mysql2
   pg
   rails (= 3.0.5)

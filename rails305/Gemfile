@@ -1,10 +1,21 @@
 source 'http://rubygems.org'
 
 gem 'rails', '3.0.5'
-
-gem 'mysql2'
-gem 'pg'
-gem 'sqlite3-ruby', :require => 'sqlite3'
-
 gem 'redis'
-gem 'ruby-debug19'
+
+platform :mri do
+  gem 'mysql2'
+  gem 'pg'
+  gem 'sqlite3-ruby', :require => 'sqlite3'
+end
+platform :jruby do
+  gem 'activerecord-jdbcmysql-adapter'
+end
+
+platform :ruby_18 do
+  gem 'SystemTimer'
+end
+
+platform :ruby_19 do
+  gem 'ruby-debug19'
+end
