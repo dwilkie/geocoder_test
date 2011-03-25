@@ -34,10 +34,11 @@ class VenueTest < ActiveSupport::TestCase
   # --- distance ---
 
   test "distance of found points" do
+    leeway = sqlite? ? 10 : 1
     distance = 9
     nearbys = Venue.near(hempstead_coords, 15)
     nikon = nearbys.detect{ |v| v.id == Fixtures.identify(:nikon) }
-    assert (distance - nikon.distance).abs < 1,
+    assert (distance - nikon.distance).abs < leeway,
       "Distance should be close to #{distance} miles but was #{nikon.distance}"
   end
 
@@ -45,18 +46,20 @@ class VenueTest < ActiveSupport::TestCase
   # --- bearing ---
 
   test "bearing (linear) of found points" do
+    leeway = sqlite? ? 45 : 2
     bearing = 137
     nearbys = Venue.near(hempstead_coords, 15, :bearing => :linear)
     nikon = nearbys.detect{ |v| v.id == Fixtures.identify(:nikon) }
-    assert (bearing - nikon.bearing).abs < 2,
+    assert (bearing - nikon.bearing).abs < leeway,
       "Bearing should be close to #{bearing} degrees but was #{nikon.bearing}"
   end
 
   test "bearing (spherical) of found points" do
+    leeway = sqlite? ? 45 : 2
     bearing = 144
     nearbys = Venue.near(hempstead_coords, 15, :bearing => :spherical)
     nikon = nearbys.detect{ |v| v.id == Fixtures.identify(:nikon) }
-    assert (bearing - nikon.bearing).abs < 2,
+    assert (bearing - nikon.bearing).abs < leeway,
       "Bearing should be close to #{bearing} degrees but was #{nikon.bearing}"
   end
 
@@ -159,6 +162,10 @@ class VenueTest < ActiveSupport::TestCase
 
 
   private # ------------------------------------------------------------------
+
+  def sqlite?
+    ActiveRecord::Base.connection.adapter_name.match(/sqlite/i)
+  end
 
   ##
   # Array of supported cache stores to test.
