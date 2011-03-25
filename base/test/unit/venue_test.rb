@@ -42,6 +42,15 @@ class VenueTest < ActiveSupport::TestCase
       "Distance should be close to #{distance} miles but was #{nikon.distance}"
   end
 
+  test "distance of found points in kilometers" do
+    leeway = sqlite? ? 10 : 1
+    distance = 14.5
+    nearbys = Venue.near(hempstead_coords, 25, :units => :km)
+    nikon = nearbys.detect{ |v| v.id == Fixtures.identify(:nikon) }
+    assert (distance - nikon.distance).abs < leeway,
+      "Distance should be close to #{distance} miles but was #{nikon.distance}"
+  end
+
 
   # --- bearing ---
 
