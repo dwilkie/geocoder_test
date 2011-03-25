@@ -31,6 +31,10 @@ class VenueTest < ActiveSupport::TestCase
     assert_nothing_raised { v.fetch_coordinates }
   end
 
+  test "lookup coordinates with space after comma" do
+    assert_not_equal [], Geocoder.search("50.2, -88.7")
+  end
+
 
   # --- distance ---
 
