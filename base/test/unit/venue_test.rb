@@ -3,6 +3,7 @@ require 'test_helper'
 class VenueTest < ActiveSupport::TestCase
 
   def setup
+    Geocoder::Configuration.lookup = :google
     Geocoder::Configuration.cache = nil
   end
 
