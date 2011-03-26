@@ -39,7 +39,7 @@ class VenueTest < ActiveSupport::TestCase
   # --- distance ---
 
   test "distance of found points" do
-    leeway = sqlite? ? 10 : 1
+    leeway = sqlite? ? 2 : 1
     distance = 9
     nearbys = Venue.near(hempstead_coords, 15)
     nikon = nearbys.detect{ |v| v.id == Fixtures.identify(:nikon) }
@@ -48,7 +48,7 @@ class VenueTest < ActiveSupport::TestCase
   end
 
   test "distance of found points in kilometers" do
-    leeway = sqlite? ? 10 : 1
+    leeway = sqlite? ? 2 : 1
     distance = 14.5
     nearbys = Venue.near(hempstead_coords, 25, :units => :km)
     nikon = nearbys.detect{ |v| v.id == Fixtures.identify(:nikon) }
