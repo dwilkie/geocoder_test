@@ -6,6 +6,10 @@ defaults: &defaults
   #   - host: slave2.local
   #     port: 27019
 
+development:
+  <<: *defaults
+  database: geocoder_development
+
 test:
   <<: *defaults
   database: geocoder_test
