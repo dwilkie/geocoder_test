@@ -68,7 +68,16 @@ class StationTest < ActiveSupport::TestCase
     assert !stations(:nikon).nearbys(5).include?(stations(:nikon))
   end
 
-#  # TODO: test limit, order, offset, exclude, and units arguments
+  test "near method units option" do
+    load_fixtures
+    assert_equal 2, Station.near(hempstead_coords, 25, :units => :mi).count
+    assert_equal 1, Station.near(hempstead_coords, 25, :units => :km).count
+  end
+
+  test "compatible with other scopes" do
+    load_fixtures
+    assert_equal stations(:beacon), Station.near(hempstead_coords, 25).limit(1).offset(1).first
+  end
 
 
   private # ------------------------------------------------------------------

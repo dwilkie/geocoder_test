@@ -35,6 +35,12 @@ class VenueTest < ActiveSupport::TestCase
     assert_not_equal [], Geocoder.search("50.2, -88.7")
   end
 
+  test "geocoded and not geocoded scopes" do
+    Venue.create(:name => "Turd Hall")
+    assert_equal 3, Venue.geocoded.count
+    assert_equal 1, Venue.not_geocoded.count
+  end
+
 
   # --- distance ---
 
@@ -105,7 +111,24 @@ class VenueTest < ActiveSupport::TestCase
   end
 
   test "don't include self in nearbys" do
+    # this also tests the :exclude option to the near method
     assert !venues(:nikon).nearbys(5).include?(venues(:nikon))
+  end
+
+  test "near method select option" do
+    forum = venues(:forum)
+    venues = Venue.near(hollywood_coords, 20,
+      :select => "*, latitude * longitude AS junk")
+    assert venues.first.junk.to_f - (forum.latitude * forum.longitude) < 0.1
+  end
+
+  test "near method units option" do
+    assert_equal 2, Venue.near(hempstead_coords, 25, :units => :mi).length
+    assert_equal 1, Venue.near(hempstead_coords, 25, :units => :km).length
+  end
+
+  test "compatible with other scopes" do
+    assert_equal venues(:beacon), Venue.near(hempstead_coords, 25).limit(1).offset(1).first
   end
 
 
@@ -161,18 +184,6 @@ class VenueTest < ActiveSupport::TestCase
       assert_equal 0, cache.send(:keys).size
     end
   end
-
-
-  # --- near scope options ---
-
-  test "select options" do
-    forum = venues(:forum)
-    venues = Venue.near(hollywood_coords, 20,
-      :select => "*, latitude * longitude AS junk")
-    assert venues.first.junk.to_f - (forum.latitude * forum.longitude) < 0.1
-  end
-
-  # TODO: test limit, order, offset, exclude, and units arguments
 
 
   private # ------------------------------------------------------------------
