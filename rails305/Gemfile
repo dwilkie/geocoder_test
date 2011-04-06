@@ -2,13 +2,13 @@ source 'http://rubygems.org'
 
 gem 'rails', '3.0.5'
 gem 'redis'
+gem 'mongoid', '2.0.0'
 
 platform :mri do
   gem 'mysql2'
   gem 'pg'
   gem 'sqlite3-ruby', :require => 'sqlite3'
-  gem 'mongoid', '2.0.0'
-  gem 'bson_ext', '1.2.4'
+  gem 'bson_ext'
 end
 platform :jruby do
   gem 'activerecord-jdbcmysql-adapter'
