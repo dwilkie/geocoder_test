@@ -138,7 +138,7 @@ class VenueTest < ActiveSupport::TestCase
     cache_stores.each do |store|
       Geocoder::Configuration.cache = store
       query = "4893 Clay St, San Francisco, CA"
-      url   = Geocoder.send(:lookup).send(:query_url, query, false)
+      url   = Geocoder.send(:lookup, query).send(:query_url, query, false)
       cache = Geocoder.cache
       cache.expire(url)
       assert_nil cache[url]
@@ -153,7 +153,7 @@ class VenueTest < ActiveSupport::TestCase
     cache_stores.each do |store|
       Geocoder::Configuration.cache = store
       query = "4893 Clay St, San Francisco, CA"
-      url   = Geocoder.send(:lookup).send(:query_url, query, false)
+      url   = Geocoder.send(:lookup, query).send(:query_url, query, false)
       cache = Geocoder.cache
       # manually set weird cache content
       cache[url] = "test({'latt':'4.44','longt':'5.55'});"
