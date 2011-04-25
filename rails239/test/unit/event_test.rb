@@ -1,1 +1,0 @@
-../../../base/test/unit/event_test.rb
