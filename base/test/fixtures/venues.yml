@@ -3,6 +3,7 @@ beacon:
   address: "2124 Broadway, New York, NY"
   latitude: 40.7805932
   longitude: -73.981318
+  color: "red"
 
 nikon:
   name: "Nikon at Jones Beach Theater"
