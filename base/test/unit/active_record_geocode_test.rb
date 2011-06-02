@@ -1,6 +1,16 @@
 require 'test_helper'
 
-class EventTest < ActiveSupport::TestCase
+class ActiveRecordGeocodeTest < ActiveSupport::TestCase
+
+  test "fetch address" do
+    v = Landmark.new(
+      :name => "Mount Rushmore",
+      :latitude => 43.88,
+      :longitude => -103.46
+    )
+    v.fetch_address
+    assert_not_nil v.address
+  end
 
   test "fetch coordinates when address supplied" do
     e = Event.new(

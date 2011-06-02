@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class PointTest < ActiveSupport::TestCase
+class MongoidGeocodeTest < ActiveSupport::TestCase
 
   def setup
     Point.delete_all

@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class StationTest < ActiveSupport::TestCase
+class MongoidTest < ActiveSupport::TestCase
 
   def setup
     Station.delete_all

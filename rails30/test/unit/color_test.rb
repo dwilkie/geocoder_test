@@ -1,1 +1,0 @@
-../../../base/test/unit/color_test.rb

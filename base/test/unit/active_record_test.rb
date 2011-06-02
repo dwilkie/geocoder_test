@@ -1,44 +1,35 @@
 require 'test_helper'
 
-class VenueTest < ActiveSupport::TestCase
+class ActiveRecordTest < ActiveSupport::TestCase
 
   def setup
     Geocoder::Configuration.lookup = :google
     Geocoder::Configuration.cache = nil
   end
 
-  # --- geocoding ---
-
-  test "fetch coordinates" do
-    v = Venue.new(
-      :name => "Madison Square Garden",
-      :address => "4 Penn Plaza, New York, NY"
-    )
-    v.fetch_coordinates
-    assert_not_nil v.latitude
-    assert_not_nil v.longitude
-    assert (v.latitude - 40.75).abs < 0.01
-    assert (v.longitude - -73.99).abs < 0.01
-  end
-
-  test "lookup with blank address" do
-    v = Venue.new(:name => "Haunted House", :address => "")
-    assert_nothing_raised { v.fetch_coordinates }
-  end
-
-  test "lookup with bad address" do
-    v = Venue.new(:name => "Haunted House", :address => ", , , ")
-    assert_nothing_raised { v.fetch_coordinates }
-  end
-
-  test "lookup coordinates with space after comma" do
-    assert_not_equal [], Geocoder.search("50.2, -88.7")
+  test "associations" do
+    assert_equal [venues(:beacon)], colors(:red).venues
   end
 
   test "geocoded and not geocoded scopes" do
     Venue.create(:name => "Turd Hall")
     assert_equal 3, Venue.geocoded.count
     assert_equal 1, Venue.not_geocoded.count
+  end
+
+
+  # --- single table inheritance ---
+
+  test "sti child can access parent config" do
+    assert_not_nil Temple.geocoder_options
+  end
+
+  test "sti child geocoding works" do
+    a = Arena.new(
+      :name => "Mellon Arena",
+      :address => "66 Mario Lemieux Place, Pittsburgh, PA")
+    a.geocode
+    assert_not_nil a.latitude
   end
 
 
@@ -132,71 +123,10 @@ class VenueTest < ActiveSupport::TestCase
   end
 
 
-  # --- cache ---
-
-  test "new result stored on cache miss" do
-    cache_stores.each do |store|
-      Geocoder::Configuration.cache = store
-      query = "4893 Clay St, San Francisco, CA"
-      url   = Geocoder.send(:lookup, query).send(:query_url, query, false)
-      cache = Geocoder.cache
-      cache.expire(url)
-      assert_nil cache[url]
-      Geocoder.search(query)
-      assert_not_nil cache[url]
-      cache.expire(url)
-    end
-  end
-
-  test "cache hit" do
-    Geocoder::Configuration.lookup = :geocoder_ca # fake result format
-    cache_stores.each do |store|
-      Geocoder::Configuration.cache = store
-      query = "4893 Clay St, San Francisco, CA"
-      url   = Geocoder.send(:lookup, query).send(:query_url, query, false)
-      cache = Geocoder.cache
-      # manually set weird cache content
-      cache[url] = "test({'latt':'4.44','longt':'5.55'});"
-      result = Geocoder.search(query).first
-      assert_equal "4.44", result.latitude.to_s
-      assert_equal "5.55", result.longitude.to_s
-      cache.expire(url)
-    end
-  end
-
-  test "cache expiration" do
-    cache_stores.each do |store|
-      cache = Geocoder.cache
-      url   = "http://a"
-      cache[url] = "blah blah blah"
-      assert cache.send(:urls).include?(url)
-      cache.expire(url)
-      assert !cache.send(:urls).include?(url)
-    end
-  end
-
-  test "full cache expiration" do
-    cache_stores.each do |store|
-      cache = Geocoder.cache
-      cache["http://a"] = "blah blah blah"
-      cache["http://b"] = "blah blah blah"
-      cache.expire(:all)
-      assert_equal 0, cache.send(:keys).size
-    end
-  end
-
-
   private # ------------------------------------------------------------------
 
   def sqlite?
     ActiveRecord::Base.connection.adapter_name.match(/sqlite/i)
-  end
-
-  ##
-  # Array of supported cache stores to test.
-  #
-  def cache_stores
-    [{}, Redis.new]
   end
 
   ##
