@@ -1,4 +1,5 @@
 require 'test_helper'
+require 'mongoid_test_helper'
 
 class MongoidTest < ActiveSupport::TestCase
 
@@ -77,6 +78,13 @@ class MongoidTest < ActiveSupport::TestCase
   test "compatible with other scopes" do
     load_fixtures
     assert_equal stations(:beacon), Station.near(hempstead_coords, 25).limit(1).offset(1).first
+  end
+
+  test "near scope with custom coordinates field" do
+    coords = [40.750354, -73.993371]
+    p = Someplace.near(coords)
+    assert p.selector[:location]
+    assert_equal p.selector[:location]['$nearSphere'], coords.reverse
   end
 
 

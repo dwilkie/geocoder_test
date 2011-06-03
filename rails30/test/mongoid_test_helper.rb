@@ -1,0 +1,1 @@
+../../base/test/mongoid_test_helper.rb
