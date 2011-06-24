@@ -58,6 +58,7 @@ class ActiveRecordTest < ActiveSupport::TestCase
     end
   end
 
+
   private # ------------------------------------------------------------------
 
   ##
