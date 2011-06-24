@@ -122,6 +122,10 @@ class ActiveRecordTest < ActiveSupport::TestCase
     assert_equal venues(:beacon), Venue.near(hempstead_coords, 25).limit(1).offset(1).first
   end
 
+  test "finds no objects near ungeocodable address" do
+    assert_equal [], Venue.near("asdfasdf")
+  end
+
 
   private # ------------------------------------------------------------------
 

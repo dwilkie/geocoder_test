@@ -87,6 +87,10 @@ class MongoidTest < ActiveSupport::TestCase
     assert_equal p.selector[:location]['$nearSphere'], coords.reverse
   end
 
+  test "finds no objects near ungeocodable address" do
+    assert_equal [], Station.near("asdfasdf")
+  end
+
 
   private # ------------------------------------------------------------------
 
