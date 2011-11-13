@@ -93,25 +93,25 @@ class ActiveRecordTest < ActiveSupport::TestCase
 
   # --- near ---
 
-  test "finds venues near a point" do
+  test "near finds venues near a point" do
     assert Venue.near(hempstead_coords, 15).include?(venues(:nikon))
   end
 
-  test "don't find venues not near a point" do
+  test "near doesn't find venues not near a point" do
     assert !Venue.near(hempstead_coords, 5).include?(venues(:forum))
   end
 
-  test "find all venues near another venue" do
+  test "nearbys finds all venues near another venue" do
     assert venues(:nikon).nearbys(40).include?(venues(:beacon))
     assert venues(:beacon).nearbys(40).include?(venues(:nikon))
   end
 
-  test "don't find venues not near another venue" do
+  test "nearbys doesn't find venues not near another venue" do
     assert !venues(:nikon).nearbys(10).include?(venues(:forum))
     assert !venues(:forum).nearbys(10).include?(venues(:beacon))
   end
 
-  test "don't include self in nearbys" do
+  test "nearbys doesn't include self" do
     # this also tests the :exclude option to the near method
     assert !venues(:nikon).nearbys(5).include?(venues(:nikon))
   end
@@ -128,17 +128,17 @@ class ActiveRecordTest < ActiveSupport::TestCase
     assert_equal 1, Venue.near(hempstead_coords, 25, :units => :km).length
   end
 
-  test "compatible with other scopes" do
+  test "near is compatible with other scopes" do
     assert_equal venues(:beacon), Venue.near(hempstead_coords, 25).limit(1).offset(1).first
   end
 
-  test "finds no objects near ungeocodable address" do
+  test "near finds no objects near ungeocodable address" do
     assert_equal [], Venue.near("asdfasdf")
   end
 
   # --- within_bounding_box ---
 
-  test "finds venues within bounding box" do
+  test "within_bounding_box finds correct objects" do
     box = [39.0, -75.0, 41.0, -73.0]
     venues = Venue.within_bounding_box(box)
     assert venues.include?(venues(:nikon))
@@ -146,11 +146,11 @@ class ActiveRecordTest < ActiveSupport::TestCase
     assert !venues.include?(venues(:forum))
   end
 
-  test "doesn't find any venues if bounding box params are empty" do
+  test "within_bounding_box doesn't find any venues if params are empty" do
     assert Venue.within_bounding_box([]).empty?
   end
 
-  test "doesn't find any venues if bounding box params are nil" do
+  test "within_bounding_box doesn't find any venues if params are nil" do
     assert Venue.within_bounding_box(nil).empty?
   end
 
