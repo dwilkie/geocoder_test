@@ -136,6 +136,23 @@ class ActiveRecordTest < ActiveSupport::TestCase
     assert_equal [], Venue.near("asdfasdf")
   end
 
+  # --- within_bounding_box ---
+
+  test "finds venues within bounding box" do
+    box = [39.0, -75.0, 41.0, -73.0]
+    venues = Venue.within_bounding_box(box)
+    assert venues.include?(venues(:nikon))
+    assert venues.include?(venues(:beacon))
+    assert !venues.include?(venues(:forum))
+  end
+
+  test "doesn't find any venues if bounding box params are empty" do
+    assert Venue.within_bounding_box([]).empty?
+  end
+
+  test "doesn't find any venues if bounding box params are nil" do
+    assert Venue.within_bounding_box(nil).empty?
+  end
 
   private # ------------------------------------------------------------------
 
