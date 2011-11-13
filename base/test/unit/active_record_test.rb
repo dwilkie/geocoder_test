@@ -11,6 +11,16 @@ class ActiveRecordTest < ActiveSupport::TestCase
     assert_equal [venues(:beacon)], colors(:red).venues
   end
 
+  test "use of includes doesn't raise error" do
+    assert_nothing_raised do
+      Venue.near([40.7, -74]).includes(:color)
+    end
+  end
+
+  test "count returns an integer" do
+    assert_kind_of Fixnum, Venue.near([40.7, -74]).count
+  end
+
   test "geocoded and not geocoded scopes" do
     Venue.create(:name => "Turd Hall")
     assert_equal 3, Venue.geocoded.count
