@@ -3,6 +3,7 @@ require 'test_helper'
 class MongoidGeocodeTest < ActiveSupport::TestCase
 
   def setup
+    skip if ENV['SKIP'] =~ /mongo/
     Point.delete_all
   end
 

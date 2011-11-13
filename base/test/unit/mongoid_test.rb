@@ -4,6 +4,7 @@ require 'mongoid_test_helper'
 class MongoidTest < ActiveSupport::TestCase
 
   def setup
+    skip if ENV['SKIP'] =~ /mongo/
     Station.delete_all
   end
 
