@@ -1,3 +1,15 @@
 red:
   name: red
   hex: ff0000
+
+black:
+  name: black
+  hex: 000000
+
+green:
+  name: green
+  hex: 00ff00
+
+yellow:
+  name: yellow
+  hex: ffff00

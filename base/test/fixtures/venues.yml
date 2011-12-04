@@ -17,3 +17,23 @@ forum:
   latitude: 33.9583
   longitude: -118.341868
 
+olympic:
+  name: "Olympic Stadium"
+  address: "Samdach Preah Sihanouk Blvd, Phnom Penh, Cambodia"
+  latitude: 11.5589289
+  longitude: 104.9126301
+  color: "green"
+
+riverside:
+  name: "Riverside Park"
+  address: "Sisowath Quay, Phnom Penh, Cambodia"
+  latitude: 11.5722821
+  longitude: 104.9294865
+  color: "yellow"
+
+kampong_thom:
+  name: "Kampong Thom"
+  address: "Kampong Thom, Cambodia"
+  latitude: 12.71197
+  longitude: 104.888603
+  color: "black"

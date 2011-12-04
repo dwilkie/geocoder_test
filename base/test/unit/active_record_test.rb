@@ -23,7 +23,7 @@ class ActiveRecordTest < ActiveSupport::TestCase
 
   test "geocoded and not geocoded scopes" do
     Venue.create(:name => "Turd Hall")
-    assert_equal 3, Venue.geocoded.count
+    assert_equal 6, Venue.geocoded.count
     assert_equal 1, Venue.not_geocoded.count
   end
 
@@ -134,6 +134,12 @@ class ActiveRecordTest < ActiveSupport::TestCase
 
   test "near finds no objects near ungeocodable address" do
     assert_equal [], Venue.near("asdfasdf")
+  end
+
+  # --- distance_from ---
+
+  test "distance_from finds associations ordered by distance" do
+    assert_equal Color.joins(:venues).order(Venue.distance_from(venues(:riverside))), [colors(:yellow), colors(:green), colors(:black), colors(:red)]
   end
 
   # --- within_bounding_box ---
